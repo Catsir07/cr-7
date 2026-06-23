@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>CR7 - The GOAT</title>
-    <!-- Premium Calligraphy & Clean Typography Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
     
     <style>
-        /* Modern Reset */
         * {
             margin: 0;
             padding: 0;
@@ -38,7 +36,7 @@
         video {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Forces video to cover entire mobile or PC screen beautifully */
+            object-fit: cover;
         }
 
         /* Elegant Calligraphy Text Overlay */
@@ -49,13 +47,13 @@
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
             padding: 40px 20px;
-            pointer-events: none; /* Allows click events to pass right through to controls */
+            pointer-events: none; 
         }
 
         .header-title {
@@ -73,19 +71,19 @@
             display: block;
             font-size: 1rem;
             letter-spacing: 4px;
-            color: #d4af37; /* Premium Gold Accent */
+            color: #d4af37; 
             margin-top: 5px;
             font-family: 'Montserrat', sans-serif;
             font-weight: 300;
         }
 
-        /* High-Tier Floating Unmute Action Button */
+        /* Floating Mute Button (Turn Audio Off) */
         .audio-control-btn {
             position: absolute;
             bottom: 40px;
             z-index: 3;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(214, 175, 55, 0.2);
+            border: 1px solid #d4af37;
             color: #fff;
             padding: 12px 30px;
             font-size: 0.9rem;
@@ -98,16 +96,48 @@
             -webkit-backdrop-filter: blur(8px);
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            display: none; /* Stays hidden until the user enters */
         }
 
-        .audio-control-btn:hover {
-            background: #fff;
+        /* Initial Enter Overlay to bypass browser audio blocks */
+        .enter-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+
+        .enter-btn {
+            font-family: 'Cinzel', serif;
+            background: transparent;
+            border: 2px solid #d4af37;
+            color: #d4af37;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(214, 175, 55, 0.2);
+        }
+
+        .enter-overlay:hover .enter-btn {
+            background: #d4af37;
             color: #000;
-            border-color: #fff;
-            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(214, 175, 55, 0.4);
         }
 
-        /* Micro Mobile Screen Adjustments */
         @media (max-width: 480px) {
             .header-title { font-size: 1.8rem; letter-spacing: 4px; }
             .header-title span { font-size: 0.8rem; }
@@ -117,16 +147,19 @@
 </head>
 <body>
 
-    <!-- Native Adaptive Video Engine -->
+    <!-- Enter Screen (Satisfies browser audio requirements instantly) -->
+    <div class="enter-overlay" id="enterOverlay" onclick="startExperience()">
+        <button class="enter-btn">ENTER EXPERIENCE</button>
+    </div>
+
+    <!-- Video Box -->
     <div class="video-background">
-        <!-- 'muted autoplay playsinline' forces it to play immediately on load everywhere -->
-        <video id="cr7Video" loop autoplay muted playsinline>
+        <video id="cr7Video" loop playsinline>
             <source src="ronaldo.mp4" type="video/mp4">
-            Your browser does not support the video tag.
         </video>
     </div>
 
-    <!-- Luxury Typography Display Layer -->
+    <!-- Typography Layer -->
     <div class="overlay-content">
         <h1 class="header-title">
             Cristiano Ronaldo
@@ -134,33 +167,44 @@
         </h1>
     </div>
 
-    <!-- Interactive Layer to enable audio tracking instantly -->
-    <button class="audio-control-btn" id="audioBtn" onclick="toggleAudio()">🔊 TAP FOR AUDIO</button>
+    <!-- Live Toggle Mute Button -->
+    <button class="audio-control-btn" id="audioBtn" onclick="toggleAudio()">🔊 MUTE AUDIO</button>
 
     <script>
         const video = document.getElementById('cr7Video');
-        const button = document.getElementById('audioBtn');
+        const audioBtn = document.getElementById('audioBtn');
+        const enterOverlay = document.getElementById('enterOverlay');
 
-        function toggleAudio() {
-            if (video.muted) {
-                video.muted = false;
-                button.innerHTML = "⏸ PAUSE AUDIO";
-                button.style.background = "rgba(214, 175, 55, 0.2)"; /* Soft Gold Glow */
-                button.style.borderColor = "#d4af37";
-            } else {
-                video.muted = true;
-                button.innerHTML = "🔊 TAP FOR AUDIO";
-                button.style.background = "rgba(255, 255, 255, 0.1)";
-                button.style.borderColor = "rgba(255, 255, 255, 0.4)";
-            }
+        function startExperience() {
+            // Unfade the splash wall
+            enterOverlay.style.opacity = '0';
+            
+            // Remove from layout after fade animation completes
+            setTimeout(() => {
+                enterOverlay.style.display = 'none';
+            }, 500);
+
+            // Play unmuted with audio right away
+            video.muted = false;
+            video.play();
+            
+            // Bring up the quick action mute button 
+            audioBtn.style.display = 'block';
         }
 
-        // Failsafe option: Force auto-play initialization in case background engine hangs
-        document.addEventListener('DOMContentLoaded', () => {
-            video.play().catch(err => {
-                console.log("Autoplay blocked by core browser layout config:", err);
-            });
-        });
+        function toggleAudio() {
+            if (!video.muted) {
+                video.muted = true;
+                audioBtn.innerHTML = "🔇 UNMUTE";
+                audioBtn.style.background = "rgba(255, 255, 255, 0.1)";
+                audioBtn.style.borderColor = "rgba(255, 255, 255, 0.4)";
+            } else {
+                video.muted = false;
+                audioBtn.innerHTML = "🔊 MUTE AUDIO";
+                audioBtn.style.background = "rgba(214, 175, 55, 0.2)";
+                audioBtn.style.borderColor = "#d4af37";
+            }
+        }
     </script>
 
 </body>
