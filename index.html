@@ -22,7 +22,62 @@
             position: fixed;
         }
 
-        /* Fullscreen Video Background Box */
+        /* 1. Premium Entrance Screen (Bypasses Browser Restrictions) */
+        .gate-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #111 0%, #000 100%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .gate-title {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            font-size: 2.8rem;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .gate-subtitle {
+            font-size: 0.9rem;
+            color: #d4af37; /* Gold */
+            letter-spacing: 5px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .enter-btn {
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 15px 40px;
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.4s ease;
+        }
+
+        .enter-btn:hover {
+            background: #d4af37;
+            color: #000;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* 2. Video Player Layout */
         .video-background {
             position: absolute;
             top: 0;
@@ -30,7 +85,6 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            overflow: hidden;
         }
 
         video {
@@ -39,170 +93,105 @@
             object-fit: cover;
         }
 
-        /* Elegant Calligraphy Text Overlay */
-        .overlay-content {
+        /* 3. Minimal Mute Toggle Button */
+        .mute-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .mute-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Ambient Dark Vignette Overlay */
+        .vignette {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 2;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 40px 20px;
-            pointer-events: none; 
-        }
-
-        .header-title {
-            font-family: 'Cinzel', serif;
-            color: #fff;
-            font-size: 2.5rem;
-            letter-spacing: 6px;
-            text-align: center;
-            text-transform: uppercase;
-            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.8);
-            margin-top: 20px;
-        }
-
-        .header-title span {
-            display: block;
-            font-size: 1rem;
-            letter-spacing: 4px;
-            color: #d4af37; 
-            margin-top: 5px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-        }
-
-        /* Floating Mute Button (Turn Audio Off) */
-        .audio-control-btn {
-            position: absolute;
-            bottom: 40px;
-            z-index: 3;
-            background: rgba(214, 175, 55, 0.2);
-            border: 1px solid #d4af37;
-            color: #fff;
-            padding: 12px 30px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-radius: 50px;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            display: none; /* Stays hidden until the user enters */
-        }
-
-        /* Initial Enter Overlay to bypass browser audio blocks */
-        .enter-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: opacity 0.5s ease;
-        }
-
-        .enter-btn {
-            font-family: 'Cinzel', serif;
-            background: transparent;
-            border: 2px solid #d4af37;
-            color: #d4af37;
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(214, 175, 55, 0.2);
-        }
-
-        .enter-overlay:hover .enter-btn {
-            background: #d4af37;
-            color: #000;
-            box-shadow: 0 0 30px rgba(214, 175, 55, 0.4);
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
         }
 
         @media (max-width: 480px) {
-            .header-title { font-size: 1.8rem; letter-spacing: 4px; }
-            .header-title span { font-size: 0.8rem; }
-            .audio-control-btn { padding: 10px 24px; font-size: 0.8rem; bottom: 50px; }
+            .gate-title { font-size: 2rem; letter-spacing: 5px; }
+            .gate-subtitle { font-size: 0.75rem; letter-spacing: 3px; }
+            .mute-btn { top: 20px; right: 20px; width: 44px; height: 44px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Enter Screen (Satisfies browser audio requirements instantly) -->
-    <div class="enter-overlay" id="enterOverlay" onclick="startExperience()">
-        <button class="enter-btn">ENTER EXPERIENCE</button>
+    <!-- The Gateway Cover Screen -->
+    <div class="gate-screen" id="gateScreen">
+        <h1 class="gate-title">CR7</h1>
+        <p class="gate-subtitle">The Greatest of all time</p>
+        <button class="enter-btn" onclick="startExperience()">Enter</button>
     </div>
 
-    <!-- Video Box -->
+    <!-- Mute Action Button -->
+    <button class="mute-btn" id="muteBtn" onclick="toggleMute()" style="display: none;">🔊</button>
+
+    <!-- Native Adaptive Video Engine -->
+    <div class="vignette"></div>
     <div class="video-background">
+        <!-- Notice 'muted' is missing so audio plays dynamically on trigger -->
         <video id="cr7Video" loop playsinline>
             <source src="ronaldo.mp4" type="video/mp4">
         </video>
     </div>
 
-    <!-- Typography Layer -->
-    <div class="overlay-content">
-        <h1 class="header-title">
-            Cristiano Ronaldo
-            <span>The Greatest Of All Time</span>
-        </h1>
-    </div>
-
-    <!-- Live Toggle Mute Button -->
-    <button class="audio-control-btn" id="audioBtn" onclick="toggleAudio()">🔊 MUTE AUDIO</button>
-
     <script>
         const video = document.getElementById('cr7Video');
-        const audioBtn = document.getElementById('audioBtn');
-        const enterOverlay = document.getElementById('enterOverlay');
+        const gate = document.getElementById('gateScreen');
+        const muteBtn = document.getElementById('muteBtn');
 
         function startExperience() {
-            // Unfade the splash wall
-            enterOverlay.style.opacity = '0';
-            
-            // Remove from layout after fade animation completes
+            // 1. Hide the entry gate smoothly
+            gate.style.opacity = '0';
             setTimeout(() => {
-                enterOverlay.style.display = 'none';
-            }, 500);
+                gate.style.display = 'none';
+            }, 800);
 
-            // Play unmuted with audio right away
+            // 2. Show the mute option
+            muteBtn.style.display = 'flex';
+
+            // 3. Play video directly with sound on!
             video.muted = false;
-            video.play();
-            
-            // Bring up the quick action mute button 
-            audioBtn.style.display = 'block';
+            video.play().catch(err => {
+                console.log("Safeguard forced mute fallback:", err);
+                // Pure fallback loop in case of mobile restrictions
+                video.muted = true;
+                video.play();
+            });
         }
 
-        function toggleAudio() {
-            if (!video.muted) {
-                video.muted = true;
-                audioBtn.innerHTML = "🔇 UNMUTE";
-                audioBtn.style.background = "rgba(255, 255, 255, 0.1)";
-                audioBtn.style.borderColor = "rgba(255, 255, 255, 0.4)";
-            } else {
+        function toggleMute() {
+            if (video.muted) {
                 video.muted = false;
-                audioBtn.innerHTML = "🔊 MUTE AUDIO";
-                audioBtn.style.background = "rgba(214, 175, 55, 0.2)";
-                audioBtn.style.borderColor = "#d4af37";
+                muteBtn.innerHTML = "🔊";
+            } else {
+                video.muted = true;
+                muteBtn.innerHTML = "🔇";
             }
         }
     </script>
