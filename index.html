@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>CR7 - The GOAT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100dvh;
+            overflow: hidden;
+            background-color: #000;
+            font-family: 'Montserrat', sans-serif;
+            position: fixed;
+            touch-action: none;
+        }
+
+        /* 1. Portal Entrance Gateway */
+        .gate-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            background: radial-gradient(circle, #151515 0%, #000 100%);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+            transition: opacity 0.6s ease;
+        }
+
+        .gate-title {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            font-size: 3rem;
+            letter-spacing: 8px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .gate-subtitle {
+            font-size: 0.8rem;
+            color: #d4af37;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .enter-btn {
+            background: transparent;
+            border: 1px solid #d4af37;
+            color: #d4af37;
+            padding: 14px 45px;
+            font-size: 0.95rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .enter-btn:active {
+            background: #d4af37;
+            color: #000;
+        }
+
+        /* 2. Main Visual Canvas */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100dvh;
+            overflow: hidden;
+            z-index: 1;
+            transition: transform 0.5s ease;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            z-index: 2;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+        }
+
+        /* Calligraphy Typography Design */
+        .typography-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 40px 20px;
+            pointer-events: none;
+            display: none;
+        }
+
+        .video-title {
+            font-family: 'Cinzel', serif;
+            color: #fff;
+            font-size: 2.2rem;
+            letter-spacing: 6px;
+            text-shadow: 0px 4px 20px rgba(0, 0, 0, 0.9);
+            text-transform: uppercase;
+        }
+
+        .video-subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: #d4af37;
+            margin-top: 8px;
+            font-weight: 300;
+            text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.9);
+            text-transform: uppercase;
+        }
+
+        /* Floating Audio Toggle Mute Switch */
+        .mute-btn {
+            position: absolute;
+            bottom: 30px;
+            right: 25px;
+            z-index: 5;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: none;
+        }
+
+        /* 🔄 THE FORCE-ROTATION MOTOR (Mobile Portrait Mode Only) */
+        @media (max-width: 767px) and (orientation: portrait) {
+            .rotated-mode {
+                width: 100dvh !important;  /* Swap viewport width with height tracking */
+                height: 100vw !important;  /* Swap viewport height with width tracking */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) rotate(90deg); /* Lock canvas rotation coordinates */
+                transform-origin: center center;
+            }
+
+            /* Readjust layout paddings for landscape display mapping */
+            .typography-overlay {
+                padding: 20px !important;
+                justify-content: center !important;
+            }
+            .video-title { font-size: 1.6rem; letter-spacing: 4px; }
+            .video-subtitle { font-size: 0.7rem; }
+            .mute-btn { bottom: 20px; right: 20px; width: 46px; height: 46px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Gateway Gate Cover Screen -->
+    <div class="gate-screen" id="gateScreen">
+        <h1 class="gate-title">CR7</h1>
+        <p class="gate-subtitle">The Greatest of all time</p>
+        <button class="enter-btn" onclick="startExperience()">Enter</button>
+    </div>
+
+    <!-- Active Presentation Area Container -->
+    <div class="video-container" id="mainContainer">
+        
+        <div class="typography-overlay" id="textOverlay">
+            <h2 class="video-title">Cristiano Ronaldo</h2>
+            <p class="video-subtitle">Greatest of All Time</p>
+        </div>
+
+        <button class="mute-btn" id="muteBtn" onclick="toggleMute()">🔊</button>
+        <div class="vignette"></div>
+
+        <video id="cr7Video" loop playsinline webkit-playsinline x5-playsinline>
+            <source src="ronaldo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <script>
+        const video = document.getElementById('cr7Video');
+        const gate = document.getElementById('gateScreen');
+        const muteBtn = document.getElementById('muteBtn');
+        const textOverlay = document.getElementById('textOverlay');
+        const container = document.getElementById('mainContainer');
+
+        // Kill default canvas document drag scrolling shifts
+        document.body.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        function startExperience() {
+            // 1. Fire RequestFullscreen API for supported Android browsers
+            const docElm = document.documentElement;
+            if (docElm.requestFullscreen) {
+                docElm.requestFullscreen().catch(() => {});
+            } else if (docElm.webkitRequestFullscreen) { /* Safari support */
+                docElm.webkitRequestFullscreen();
+            }
+
+            // 2. Add the custom CSS rotation engine class to flip the content
+            container.classList.add('rotated-mode');
+
+            // 3. Clear out overlay barrier layout smoothly
+            gate.style.opacity = '0';
+            setTimeout(() => {
+                gate.style.display = 'none';
+            }, 600);
+
+            // 4. Render user interface overlays
+            muteBtn.style.display = 'flex';
+            textOverlay.style.display = 'flex';
+
+            // 5. Fire up the audio tracking pipeline natively
+            video.muted = false;
+            video.play().catch(err => {
+                console.log("Auto initialization blocked:", err);
+                video.muted = true;
+                video.play();
+                muteBtn.innerHTML = "🔇";
+            });
+        }
+
+        function toggleMute() {
+            if (video.muted) {
+                video.muted = false;
+                muteBtn.innerHTML = "🔊";
+            } else {
+                video.muted = true;
+                muteBtn.innerHTML = "🔇";
+            }
+        }
+    </script>
+
+</body>
+</html>
+
